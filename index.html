@@ -5,9 +5,16 @@
 </head>
 <body>
 <h1>Resume Downloader</h1>
-<form action="/download" method="post">
+<form action="/download" method="get">
 <input type="text" name="resume_io_link" placeholder="Enter your resume.io link">
 <input type="submit" value="Download Resume">
 </form>
+<script>
+function downloadResume() {
+var resume_io_link = document.getElementById("resume_io_link").value;
+var url = "/download?resume_io_link=" + encodeURIComponent(resume_io_link);
+window.location.href = url;
+}
+</script>
 </body>
 </html>
