@@ -5,15 +5,29 @@
 </head>
 <body>
 <h1>Resume Downloader</h1>
-<form action="/download" method="get">
-<input type="text" name="resume_io_link" placeholder="Enter your resume.io link">
+<form action="/download" method="post" enctype="multipart/form-data">
+<input type="file" name="resume_io_link">
 <input type="submit" value="Download Resume">
 </form>
 <script>
 function downloadResume() {
-var resume_io_link = document.getElementById("resume_io_link").value;
-var url = "/download?resume_io_link=" + encodeURIComponent(resume_io_link);
-window.location.href = url;
+var resume_io_link = document.getElementById("resume_io_link").files[0];
+var filename = resume_io_link.name;
+var file_data = resume_io_link.slice(0, resume_io_link.size);
+var formData = new FormData();
+formData.append("resume_io_link", file_data);
+formData.append("filename", filename);
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "/download", true);
+xhr.onload = function() {
+if (xhr.status === 200) {
+alert("Resume downloaded successfully!");
+} else {
+alert("Error downloading resume!");
+}
+};
+xhr.send(formData);
 }
 </script>
 </body>
